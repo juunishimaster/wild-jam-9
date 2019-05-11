@@ -20,4 +20,3 @@ position = Vector2( -44.2629, -113.651 )
 [node name="ActionButton2" parent="ActionPanel" instance=ExtResource( 3 )]
 position = Vector2( 44, -113.651 )
 action_type = "walk-up"
-
