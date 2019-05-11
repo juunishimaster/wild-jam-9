@@ -43,7 +43,10 @@ func on_action_end():
 		#execute next action
 	else:
 		print("End of player's turn")
+		curr_action_idx = 0
+		input_counter = 0
 		#end player turn here
+		
 	
 
 # Function that handle the signal emitted from Action Buttons
@@ -52,22 +55,15 @@ func _on_ActionButton_action_signal(action):
 	# Assuming all action receive are valid string
 	action_array[input_counter] = action
 	
-	# Check action
-	# These current action are placeholders
-	if action == "walk-up":
-		print("Tested Walk up")
-	elif action == "walk-down":
-		print("Walk down")
-	elif action == "attack-a":
-		print("Punch")
-	else:
-		print("Godot cannot understand")
+	print("Action inputted: " + action)
 	
 	input_counter += 1
 	
 	# Check input counter
 	if input_counter > max_action_idx:
 		hide_action_panel()
+		
 		# Start executing the action(s)
+		# walk() etc etc etc
 		
 	
