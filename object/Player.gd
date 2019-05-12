@@ -9,8 +9,12 @@ var input_counter = 0
 var curr_action_idx = 0
 var max_action_idx = 1 # Because player can only stack 2 actions on their turn
 
+var curr_health
+var max_health = 3
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	curr_health = max_health
 	for btn in get_tree().get_nodes_in_group("player_actions"):
 		btn.connect("action_signal", self, "_on_ActionButton_action_signal")
 
@@ -29,10 +33,24 @@ func hide_action_panel():
 func stack_action():
 	pass
 
+func action_heal(i):
+	curr_health += i
+	
+	if curr_health > max_health:
+		curr_health = max_health
+
+func action_attack():
+	pass
+
+func action_ranged_attack():
+	pass
+	
 func do_action():
 	#walking
 	
 	#attack
+	
+	#healing
 	pass
 
 # Goes to this function after each finished action
