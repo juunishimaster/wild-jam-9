@@ -4,23 +4,67 @@ extends Sprite
 # var a = 2
 # var b = "text"
 
+# Movement variables
+var speed = 256
+var tile_size = 64
+
+var last_pos = Vector2()
+var target_pos = Vector2()
+var move_dir = Vector2()
+
+# Action variables
 var action_array = ["idle", "idle"]
 var input_counter = 0
 var curr_action_idx = 0
 var max_action_idx = 1 # Because player can only stack 2 actions on their turn
+
+var min_atk_distance = 32 # Change this accordingly
 
 var curr_health
 var max_health = 3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Movement preparation
+	position = position.snapped(Vector2(tile_size, tile_size))
+	last_pos = position
+	target_pos = position
+	
+	# Action preparation
 	curr_health = max_health
 	for btn in get_tree().get_nodes_in_group("player_actions"):
 		btn.connect("action_signal", self, "_on_ActionButton_action_signal")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	# Movement
+	position += speed * move_dir * delta
+	
+	if position.distance_to(last_pos) >= tile_size:
+		position = target_pos
+		
+	# Idle
+	if position == target_pos:
+		get_movedir()
+		last_pos = position
+		target_pos = move_dir * tile_size
+	
+	pass
+
+# Get direction the player wants to move
+func get_movedir():
+	var LEFT = Input.is_action_pressed("ui_left")
+	var RIGHT = Input.is_action_pressed("ui_right")
+	var UP = Input.is_action_pressed("ui_up")
+	var DOWN = Input.is_action_pressed("ui_down")
+	
+	move_dir.x = -int(LEFT) + int(RIGHT)
+	move_dir.y = -int(UP) + int(DOWN)
+	
+	print(move_dir)
+	
+	if move_dir.x != 0 && move_dir.y != 0:
+		move_dir = Vector2.ZERO
 
 # Show the action panel at the beginning of player's turn
 func show_action_panel():
@@ -40,11 +84,18 @@ func action_heal(i):
 		curr_health = max_health
 
 func action_attack():
+	# Assuming the attack goes AoE but close ranged
+	var enemy_list = get_tree().get_nodes_in_group("enemies")
+	for en in enemy_list:
+		if en.global_position.distance_to(self.global_position) <= min_atk_distance:
+			print("Damage the enemy")
+			# damage function in the enemy nodes' script
 	pass
 
 func action_ranged_attack():
-	pass
 	
+	pass
+
 func do_action():
 	#walking
 	
