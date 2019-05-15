@@ -7,6 +7,7 @@ var left_tile
 var right_tile
 
 const TILE_WIDTH = 320
+const SCALE = 2
 
 var single_door_maps = ['res://object/Tiles/E00000001.tscn',
 			'res://object/Tiles/E00000010.tscn',
@@ -21,20 +22,19 @@ var single_door_maps = ['res://object/Tiles/E00000001.tscn',
 var muilti_door_maps = ['res://object/Tiles/E01010010.tscn',
 			'res://object/Tiles/E01010101.tscn',
 			'res://object/Tiles/E10101010.tscn',
+			'res://object/Tiles/E00101001.tscn', # new
 			]
-
-var tile_width;
 
 func _ready():
 	randomize()
-	var middel_tile_index = int(rand_range(0,3))
+	var middel_tile_index = int(rand_range(0,4))
 	print(middel_tile_index)
-	
+	middel_tile_index = 0;
 	middel_tile = load(muilti_door_maps[middel_tile_index]).instance();
 	
 	if(middel_tile_index == 0):
 		top_tile = load(single_door_maps[1]).instance();
-		left_tile = load(single_door_maps[2]).instance();
+		# left_tile = load(single_door_maps[2]).instance();
 		buttom_tile = load(single_door_maps[4]).instance();
 		right_tile = load(single_door_maps[3]).instance();
 		pass
@@ -44,23 +44,44 @@ func _ready():
 		buttom_tile = load(single_door_maps[5]).instance();
 		right_tile = load(single_door_maps[3]).instance();
 		pass
-	else:
+	elif(middel_tile_index == 2):
 		top_tile = load(single_door_maps[0]).instance();
 		left_tile = load(single_door_maps[6]).instance();
 		buttom_tile = load(single_door_maps[4]).instance();
 		right_tile = load(single_door_maps[2]).instance();
 		pass
+	else:
+		# top_tile = load(single_door_maps[0]).instance();
+		left_tile = load(single_door_maps[6]).instance();
+		buttom_tile = load(single_door_maps[5]).instance();
+		right_tile = load(single_door_maps[2]).instance();
+		pass
 	
 	add_child(middel_tile)
-	add_child(top_tile)
-	add_child(buttom_tile)
-	add_child(left_tile)
-	add_child(right_tile)
-	middel_tile.position = Vector2(TILE_WIDTH,TILE_WIDTH);
-	top_tile.position = Vector2(TILE_WIDTH,0);
-	buttom_tile.position = Vector2(TILE_WIDTH,2*TILE_WIDTH);
-	right_tile.position = Vector2(0,TILE_WIDTH);
-	left_tile.position = Vector2(2*TILE_WIDTH,TILE_WIDTH);
+	middel_tile.position = Vector2(TILE_WIDTH*SCALE,TILE_WIDTH*SCALE);
+	middel_tile.scale = Vector2(SCALE,SCALE)
+	
+	if(top_tile):
+		add_child(top_tile)
+		top_tile.position = Vector2(TILE_WIDTH*SCALE,0);
+		top_tile.scale = Vector2(SCALE,SCALE)
+	
+	if(buttom_tile):
+		add_child(buttom_tile)
+		buttom_tile.position = Vector2(TILE_WIDTH*SCALE,2*TILE_WIDTH*SCALE);
+		buttom_tile.scale = Vector2(SCALE,SCALE)
+		
+	
+	if(left_tile):
+		add_child(left_tile)
+		left_tile.position = Vector2(2*TILE_WIDTH*SCALE,TILE_WIDTH*SCALE);
+		left_tile.scale = Vector2(SCALE,SCALE)
+		
+	if(right_tile):
+		add_child(right_tile)
+		right_tile.position = Vector2(0,TILE_WIDTH*SCALE);
+		right_tile.scale = Vector2(SCALE,SCALE)
+		
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
