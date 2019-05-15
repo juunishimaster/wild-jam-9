@@ -1,4 +1,4 @@
-extends Sprite
+extends Area2D
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -47,21 +47,19 @@ func _process(delta):
 	if position == target_pos:
 		get_movedir()
 		last_pos = position
-		target_pos = move_dir * tile_size
+		target_pos += move_dir * tile_size
 	
 	pass
 
 # Get direction the player wants to move
 func get_movedir():
-	var LEFT = Input.is_action_pressed("ui_left")
-	var RIGHT = Input.is_action_pressed("ui_right")
-	var UP = Input.is_action_pressed("ui_up")
-	var DOWN = Input.is_action_pressed("ui_down")
+	var LEFT = Input.is_action_just_pressed("ui_left")
+	var RIGHT = Input.is_action_just_pressed("ui_right")
+	var UP = Input.is_action_just_pressed("ui_up")
+	var DOWN = Input.is_action_just_pressed("ui_down")
 	
 	move_dir.x = -int(LEFT) + int(RIGHT)
 	move_dir.y = -int(UP) + int(DOWN)
-	
-	print(move_dir)
 	
 	if move_dir.x != 0 && move_dir.y != 0:
 		move_dir = Vector2.ZERO
