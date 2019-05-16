@@ -38,7 +38,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func  _physics_process(delta):
 	# Movement
-	#position += speed * move_dir * delta
 	
 	var vel = move_and_slide(speed * move_dir)
 	
@@ -105,11 +104,13 @@ func action_ranged_attack():
 
 func do_action():
 	#walking
-	
+
 	#attack
 	
 	#healing
 	pass
+
+
 
 # Goes to this function after each finished action
 # Done move 1 grid, goes here; done attack, goes here
@@ -122,7 +123,6 @@ func on_action_end():
 		curr_action_idx = 0
 		input_counter = 0
 		#end player turn here
-		
 	
 
 # Function that handle the signal emitted from Action Buttons
@@ -141,5 +141,3 @@ func _on_ActionButton_action_signal(action):
 		
 		# Start executing the action(s)
 		# walk() etc etc etc
-		
-	
