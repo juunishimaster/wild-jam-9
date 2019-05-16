@@ -16,7 +16,14 @@ _global_script_class_icons={
 [application]
 
 config/name="Godot Wild Jam 9"
+run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=640
+window/size/height=640
+window/size/resizable=false
 
 [editor_plugins]
 

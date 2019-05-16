@@ -1,4 +1,4 @@
-extends Area2D
+extends KinematicBody2D
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -6,7 +6,7 @@ extends Area2D
 
 # Movement variables
 var speed = 256
-var tile_size = 64
+var tile_size = 32
 
 var last_pos = Vector2()
 var target_pos = Vector2()
@@ -26,7 +26,7 @@ var max_health = 3
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Movement preparation
-	position = position.snapped(Vector2(tile_size, tile_size))
+	position = Vector2(176, 176)
 	last_pos = position
 	target_pos = position
 	
@@ -36,13 +36,22 @@ func _ready():
 		btn.connect("action_signal", self, "_on_ActionButton_action_signal")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func  _physics_process(delta):
 	# Movement
-	position += speed * move_dir * delta
+	#position += speed * move_dir * delta
+	
+	var vel = move_and_slide(speed * move_dir)
+	
+	if(vel.length() == 0):
+		if(position.distance_to(last_pos) > position.distance_to(target_pos)):
+			position = target_pos
+		else:
+			position = last_pos
+			target_pos = last_pos
 	
 	if position.distance_to(last_pos) >= tile_size:
 		position = target_pos
-		
+	
 	# Idle
 	if position == target_pos:
 		get_movedir()
