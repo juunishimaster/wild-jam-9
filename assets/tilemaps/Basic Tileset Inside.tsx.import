@@ -1,0 +1,20 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/Basic Tileset Inside.tsx-84f48d2f94355faa10eccbc398c7d832.res"
+
+[deps]
+
+source_file="res://assets/tilemaps/Basic Tileset Inside.tsx"
+dest_files=[ "res://.import/Basic Tileset Inside.tsx-84f48d2f94355faa10eccbc398c7d832.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+apply_offset=false
+post_import_script=""
