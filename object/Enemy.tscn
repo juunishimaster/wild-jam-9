@@ -6,7 +6,9 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14, 14 )
 
-[node name="Enemy" type="KinematicBody2D"]
+[node name="Enemy" type="KinematicBody2D" groups=[
+"enemies",
+]]
 position = Vector2( 64, 64 )
 script = ExtResource( 1 )
 

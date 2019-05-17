@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+# State variables
+enum {IDEL, WALK, ATTACK, DEAD}
+var state = null
 
 # Movement variables
 var speed = 256
@@ -20,8 +20,12 @@ var max_action_idx = 1 # Because player can only stack 2 actions on their turn
 
 var min_atk_distance = 32 # Change this accordingly
 
-var curr_health
+# health
+ 
+signal health_changed
+signal dead 
 var max_health = 3
+var curr_health = max_health
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,6 +33,10 @@ func _ready():
 	position = Vector2(176, 176)
 	last_pos = position
 	target_pos = position
+	
+	state = IDEL
+	
+	emit_signal('health_changed', curr_health)
 	
 	# Action preparation
 	curr_health = max_health
@@ -69,8 +77,6 @@ func get_movedir():
 	move_dir.x = -int(LEFT) + int(RIGHT)
 	move_dir.y = -int(UP) + int(DOWN)
 	
-	if move_dir.x != 0 && move_dir.y != 0:
-		move_dir = Vector2.ZERO
 
 # Show the action panel at the beginning of player's turn
 func show_action_panel():
@@ -95,7 +101,7 @@ func action_attack():
 	for en in enemy_list:
 		if en.global_position.distance_to(self.global_position) <= min_atk_distance:
 			print("Damage the enemy")
-			# damage function in the enemy nodes' script
+			en.health -= 1
 	pass
 
 func action_ranged_attack():
@@ -103,13 +109,16 @@ func action_ranged_attack():
 	pass
 
 func do_action():
+	
+	if(state != IDEL):
+		return
+	
 	#walking
 
 	#attack
 	
 	#healing
 	pass
-
 
 
 # Goes to this function after each finished action
@@ -141,3 +150,9 @@ func _on_ActionButton_action_signal(action):
 		
 		# Start executing the action(s)
 		# walk() etc etc etc
+
+func hurt():
+	curr_health -= 1
+	emit_signal("health_changed",curr_health)
+	if(curr_health == 0):
+		emit_signal("dead")
