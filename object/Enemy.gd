@@ -28,7 +28,7 @@ var is_enemy_turn = false
 
 # enemy slight range
 var eye_range = 10*32;
-var attack_range = 1*32;
+var attack_range = 2*32;
  
 # player node
 var player
@@ -51,33 +51,28 @@ func _ready():
 func  _physics_process(delta):
 	# Movement
 	var vel = move_and_slide(speed * move_dir)
-	if(state != ATTACK):
 		
-		if(vel.length() == 0):
-			if(position.distance_to(last_pos) > position.distance_to(target_pos)):
-				position = target_pos
-			else:
-				position = last_pos
-				target_pos = last_pos
-	
-		if position.distance_to(last_pos) >= tile_size:
+	if(vel.length() == 0):
+		if(position.distance_to(last_pos) > position.distance_to(target_pos)):
 			position = target_pos
+		else:
+			position = last_pos
+			target_pos = last_pos
+	
+	if position.distance_to(last_pos) >= tile_size:
+		position = target_pos
 	
 	# Idle
-		if position == target_pos:
-			if is_enemy_turn:
-				emit_signal("end_enemy_turn")
+	if position == target_pos:
+		if is_enemy_turn:
+			emit_signal("end_enemy_turn")
 			is_enemy_turn = false
-			if(state == WALK and position.distance_to(player.position) < eye_range):
-				state = FOLLOW
-				print('Enemy is following')
-			elif(state == FOLLOW and position.distance_to(player.position) < attack_range):
-				state = ATTACK
-				print('Enemy is attacking');
-	
-	if(state == ATTACK):
-		# do attack here
-		pass
+		if(state == WALK and position.distance_to(player.position) < eye_range):
+			state = FOLLOW
+			print('Enemy is following')
+		elif(state == FOLLOW and position.distance_to(player.position) < attack_range):
+			state = ATTACK
+			print('Enemy is attacking');
 	pass
 
 func move_me():
@@ -85,6 +80,11 @@ func move_me():
 		move_dir = get_random_direction()
 	if(state == FOLLOW):
 		move_dir = follow(player.position);
+	if(state == ATTACK):
+		move_dir = follow(player.position);
+		print('Enemy is ATTACKING')
+		player.hurt()
+	
 	last_pos = position
 	target_pos += move_dir* tile_size
 

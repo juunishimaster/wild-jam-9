@@ -1,51 +1,121 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://object/Enemy.tscn" type="PackedScene" id=2]
-[ext_resource path="res://object/Tiles/E10101010.tscn" type="PackedScene" id=3]
-[ext_resource path="res://object/Tiles/E10000100.tscn" type="PackedScene" id=4]
-[ext_resource path="res://object/Tiles/E01010010.tscn" type="PackedScene" id=5]
-[ext_resource path="res://object/Tiles/E00000010.tscn" type="PackedScene" id=6]
-[ext_resource path="res://object/Tiles/E00000100.tscn" type="PackedScene" id=7]
-[ext_resource path="res://object/Tiles/E00100000.tscn" type="PackedScene" id=8]
-[ext_resource path="res://object/Tiles/E00010000.tscn" type="PackedScene" id=9]
-[ext_resource path="res://object/Player.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Health.gd" type="Script" id=3]
+[ext_resource path="res://assets/UI_Stuff_32x32.png" type="Texture" id=4]
+[ext_resource path="res://object/Tiles/E10101010.tscn" type="PackedScene" id=5]
+[ext_resource path="res://object/Tiles/E10000100.tscn" type="PackedScene" id=6]
+[ext_resource path="res://object/Tiles/E01010010.tscn" type="PackedScene" id=7]
+[ext_resource path="res://object/Tiles/E00000010.tscn" type="PackedScene" id=8]
+[ext_resource path="res://object/Tiles/E00000100.tscn" type="PackedScene" id=9]
+[ext_resource path="res://object/Tiles/E00100000.tscn" type="PackedScene" id=10]
+[ext_resource path="res://object/Tiles/E00010000.tscn" type="PackedScene" id=11]
+[ext_resource path="res://object/Player.tscn" type="PackedScene" id=12]
+[ext_resource path="res://assets/Audio/Funky_Skeletons_Loop.ogg" type="AudioStream" id=13]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 64, 64, 64, 64 )
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
 Enemy = ExtResource( 2 )
 
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Health" type="HBoxContainer" parent="UI"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 3 )
+
+[node name="H1" type="TextureRect" parent="UI/Health"]
+margin_right = 32.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 32, 32 )
+texture = SubResource( 1 )
+
+[node name="H2" type="TextureRect" parent="UI/Health"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 32, 32 )
+texture = SubResource( 1 )
+
+[node name="H3" type="TextureRect" parent="UI/Health"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 32, 32 )
+texture = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+margin_left = 547.0
+margin_top = 484.0
+margin_right = 643.0
+margin_bottom = 641.0
+
+[node name="Z" type="Button" parent="UI/VBoxContainer"]
+margin_right = 96.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 64, 64 )
+icon = SubResource( 2 )
+flat = true
+clip_text = true
+
+[node name="X" type="Button" parent="UI/VBoxContainer"]
+margin_top = 74.0
+margin_right = 96.0
+margin_bottom = 144.0
+rect_min_size = Vector2( 64, 64 )
+icon = SubResource( 3 )
+flat = true
+
 [node name="Floor" type="Node2D" parent="."]
 editor/display_folded = true
 scale = Vector2( 2, 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="E10101010" parent="Floor" instance=ExtResource( 3 )]
+[node name="E10101010" parent="Floor" instance=ExtResource( 5 )]
 
-[node name="E10000100" parent="Floor" instance=ExtResource( 4 )]
+[node name="E10000100" parent="Floor" instance=ExtResource( 6 )]
 position = Vector2( -320, 0 )
 
-[node name="E01010010" parent="Floor" instance=ExtResource( 5 )]
+[node name="E01010010" parent="Floor" instance=ExtResource( 7 )]
 position = Vector2( 320, 0 )
 
-[node name="E00000010" parent="Floor" instance=ExtResource( 6 )]
+[node name="E00000010" parent="Floor" instance=ExtResource( 8 )]
 position = Vector2( 320, -320 )
 
-[node name="E00000100" parent="Floor" instance=ExtResource( 7 )]
+[node name="E00000100" parent="Floor" instance=ExtResource( 9 )]
 position = Vector2( -640, 0 )
 
-[node name="E00100000" parent="Floor" instance=ExtResource( 8 )]
+[node name="E00100000" parent="Floor" instance=ExtResource( 10 )]
 scale = Vector2( 1, -1 )
 
-[node name="E00010000" parent="Floor" instance=ExtResource( 9 )]
+[node name="E00010000" parent="Floor" instance=ExtResource( 11 )]
 position = Vector2( 0, 320 )
 
-[node name="E00000011" parent="Floor" instance=ExtResource( 6 )]
+[node name="E00000011" parent="Floor" instance=ExtResource( 8 )]
 position = Vector2( 320, 640 )
 scale = Vector2( 1, -1 )
 
 [node name="Player" parent="." groups=[
 "player",
-] instance=ExtResource( 10 )]
+] instance=ExtResource( 12 )]
 editor/display_folded = true
 position = Vector2( 121.047, 329.629 )
 
@@ -94,4 +164,11 @@ position = Vector2( 230.785, 102.529 )
 
 [node name="Enemy11" parent="Enemyes" instance=ExtResource( 2 )]
 position = Vector2( 281.585, -299.777 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+autoplay = true
+[connection signal="pressed" from="UI/VBoxContainer/Z" to="Player" method="_on_Z_pressed"]
+[connection signal="pressed" from="UI/VBoxContainer/X" to="Player" method="_on_X_pressed"]
 [connection signal="end_player_turn" from="Player" to="." method="player_turn_processor"]
+[connection signal="health_changed" from="Player" to="UI/Health" method="_on_Player_health_changed"]

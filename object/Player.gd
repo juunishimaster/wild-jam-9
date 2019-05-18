@@ -17,7 +17,6 @@ var area_atk_distance = 1 # Change this accordingly; meaning: area_atk_distance 
 var ranged_atk_distance = 3 # Meaning: ranged_atk_distance * tile_size
 
 # health
- 
 signal health_changed
 signal dead 
 var max_health = 3
@@ -139,3 +138,18 @@ func end_player_turn():
 func toggle_control():
 	lock_control = !lock_control
 	pass
+
+func hurt():
+	curr_health -= 1
+	emit_signal("health_changed",curr_health)
+	if(curr_health == 0):
+		emit_signal("dead")
+
+func _on_Z_pressed():
+	# do Z attack here 
+	pass # Replace with function body.
+
+
+func _on_X_pressed():
+	# do X attack here
+	pass # Replace with function body.

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Funky_Skeletons_Loop.ogg-2a0e794a9512a4e1163fe6882fa6ca49.oggstr"
+
+[deps]
+
+source_file="res://assets/Audio/Funky_Skeletons_Loop.ogg"
+dest_files=[ "res://.import/Funky_Skeletons_Loop.ogg-2a0e794a9512a4e1163fe6882fa6ca49.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
