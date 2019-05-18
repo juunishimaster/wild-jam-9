@@ -17,10 +17,16 @@ var target_pos = Vector2()
 var move_dir = Vector2()
 
 # helth
-onready var health = 3
+onready var curr_health = 3
+var max_health = 3
+
+# Turn based things
+signal end_enemy_turn
+var is_enemy_turn = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	add_to_group("enemies")
 	position = Vector2(176, 176)
 	last_pos = position
 	target_pos = position
@@ -45,11 +51,16 @@ func  _physics_process(delta):
 	
 	# Idle
 	if position == target_pos:
-		move_dir = get_random_direction()
-		last_pos = position
-		target_pos += move_dir* tile_size
+		if is_enemy_turn:
+			emit_signal("end_enemy_turn")
+			is_enemy_turn = false
 	
 	pass
+
+func move_me():
+	move_dir = get_random_direction()
+	last_pos = position
+	target_pos += move_dir* tile_size
 
 func get_random_direction():
 	# select axis to move
@@ -80,4 +91,14 @@ func do_action():
 	pass
 
 func _attack():
+	pass
+
+func update_health(h):
+	curr_health += h
+	
+	if curr_health == 0:
+		print("Die")
+		self.queue_free()
+	elif curr_health > max_health:
+		curr_health = max_health
 	pass
