@@ -1,20 +1,97 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://object/Enemy.tscn" type="PackedScene" id=2]
-[ext_resource path="res://object/Floor.tscn" type="PackedScene" id=3]
-[ext_resource path="res://object/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://object/Tiles/E10101010.tscn" type="PackedScene" id=3]
+[ext_resource path="res://object/Tiles/E10000100.tscn" type="PackedScene" id=4]
+[ext_resource path="res://object/Tiles/E01010010.tscn" type="PackedScene" id=5]
+[ext_resource path="res://object/Tiles/E00000010.tscn" type="PackedScene" id=6]
+[ext_resource path="res://object/Tiles/E00000100.tscn" type="PackedScene" id=7]
+[ext_resource path="res://object/Tiles/E00100000.tscn" type="PackedScene" id=8]
+[ext_resource path="res://object/Tiles/E00010000.tscn" type="PackedScene" id=9]
+[ext_resource path="res://object/Player.tscn" type="PackedScene" id=10]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
 Enemy = ExtResource( 2 )
 
-[node name="Node2D" parent="." instance=ExtResource( 3 )]
+[node name="Floor" type="Node2D" parent="."]
+editor/display_folded = true
+scale = Vector2( 2, 2 )
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 192, 192 )
+[node name="E10101010" parent="Floor" instance=ExtResource( 3 )]
+
+[node name="E10000100" parent="Floor" instance=ExtResource( 4 )]
+position = Vector2( -320, 0 )
+
+[node name="E01010010" parent="Floor" instance=ExtResource( 5 )]
+position = Vector2( 320, 0 )
+
+[node name="E00000010" parent="Floor" instance=ExtResource( 6 )]
+position = Vector2( 320, -320 )
+
+[node name="E00000100" parent="Floor" instance=ExtResource( 7 )]
+position = Vector2( -640, 0 )
+
+[node name="E00100000" parent="Floor" instance=ExtResource( 8 )]
+scale = Vector2( 1, -1 )
+
+[node name="E00010000" parent="Floor" instance=ExtResource( 9 )]
+position = Vector2( 0, 320 )
+
+[node name="E00000011" parent="Floor" instance=ExtResource( 6 )]
+position = Vector2( 320, 640 )
+scale = Vector2( 1, -1 )
+
+[node name="Player" parent="." groups=[
+"player",
+] instance=ExtResource( 10 )]
+editor/display_folded = true
+position = Vector2( 121.047, 329.629 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( 1.05615, 4.81172 )
 current = true
 
+[node name="Enemyes" type="Node" parent="."]
+editor/display_folded = true
+
+[node name="Enemy" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 122.744, 110.303 )
+
+[node name="Enemy2" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 547.93, 342.875 )
+
+[node name="Enemy3" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 527.787, 120.06 )
+
+[node name="Enemy4" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 142.351, 546.176 )
+
+[node name="Enemy5" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 94.0659, 423.642 )
+
+[node name="Enemy6" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( -760.987, 455.724 )
+
+[node name="Enemy12" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( -1012.25, 470.078 )
+
+[node name="Enemy13" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( -233.693, 494.321 )
+
+[node name="Enemy7" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 792.422, -191.433 )
+
+[node name="Enemy8" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 146.548, -116.087 )
+
+[node name="Enemy9" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 445.432, 535.359 )
+
+[node name="Enemy10" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 230.785, 102.529 )
+
+[node name="Enemy11" parent="Enemyes" instance=ExtResource( 2 )]
+position = Vector2( 281.585, -299.777 )
 [connection signal="end_player_turn" from="Player" to="." method="player_turn_processor"]

@@ -8,9 +8,6 @@ var enemy_count = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	for i in range(10):
-		add_child(Enemy.instance())
-	
 	# Connect enemies signal with function
 	for en in get_tree().get_nodes_in_group("enemies"):
 		en.connect("end_enemy_turn", self, "enemy_turn_processor")

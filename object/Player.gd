@@ -32,7 +32,7 @@ var is_player_turn = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Movement preparation
-	position = Vector2(176, 176)
+	position = Vector2(int(position.x/32)*32 + 16, int(position.y/32)*32 + 16)
 	last_pos = position
 	target_pos = position
 	

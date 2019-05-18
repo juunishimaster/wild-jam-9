@@ -7,6 +7,8 @@ const type = [4, 8, 12, 16, 18, 20, 21, 23]
 # When enemy is not aware of player it moves randomly
 # When player is inside a silgth range of enemy, enemy follows player.
 # When it got player into attack range, enemy attacks it. 
+enum {IDLE,WALK,FOLLOW,ATTACK,DEATH}
+var state
 
 # Movement variables
 var speed = 256
@@ -24,41 +26,65 @@ var max_health = 3
 signal end_enemy_turn
 var is_enemy_turn = false
 
+# enemy slight range
+var eye_range = 10*32;
+var attack_range = 1*32;
+ 
+# player node
+var player
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group("enemies")
-	position = Vector2(176, 176)
+	
+	player = get_tree().get_nodes_in_group('player')[0];
+	
+	state = WALK
+	
+	position = Vector2(int(position.x/32)*32 + 16, int(position.y/32)*32 + 16)
 	last_pos = position
 	target_pos = position
+	
 	randomize()
 	$Sprite.frame = type[int(rand_range(0,type.size()))]
-	pass # Replace with function body.
 
 func  _physics_process(delta):
 	# Movement
-	
 	var vel = move_and_slide(speed * move_dir)
+	if(state != ATTACK):
+		
+		if(vel.length() == 0):
+			if(position.distance_to(last_pos) > position.distance_to(target_pos)):
+				position = target_pos
+			else:
+				position = last_pos
+				target_pos = last_pos
 	
-	if(vel.length() == 0):
-		if(position.distance_to(last_pos) > position.distance_to(target_pos)):
+		if position.distance_to(last_pos) >= tile_size:
 			position = target_pos
-		else:
-			position = last_pos
-			target_pos = last_pos
-	
-	if position.distance_to(last_pos) >= tile_size:
-		position = target_pos
 	
 	# Idle
-	if position == target_pos:
-		if is_enemy_turn:
-			emit_signal("end_enemy_turn")
+		if position == target_pos:
+			if is_enemy_turn:
+				emit_signal("end_enemy_turn")
 			is_enemy_turn = false
+			if(state == WALK and position.distance_to(player.position) < eye_range):
+				state = FOLLOW
+				print('Enemy is following')
+			elif(state == FOLLOW and position.distance_to(player.position) < attack_range):
+				state = ATTACK
+				print('Enemy is attacking');
 	
+	if(state == ATTACK):
+		# do attack here
+		pass
 	pass
 
 func move_me():
-	move_dir = get_random_direction()
+	if(state == WALK):
+		move_dir = get_random_direction()
+	if(state == FOLLOW):
+		move_dir = follow(player.position);
 	last_pos = position
 	target_pos += move_dir* tile_size
 
@@ -82,8 +108,6 @@ func follow(target):
 		direction = Vector2(0, sign(direction.y))
 	
 	return direction
-
-
 
 # connect this function to player move signal
 # so that player done action all enemy do action
