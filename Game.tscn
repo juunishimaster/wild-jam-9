@@ -17,3 +17,4 @@ position = Vector2( 192, 192 )
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
 
+[connection signal="end_player_turn" from="Player" to="." method="player_turn_processor"]

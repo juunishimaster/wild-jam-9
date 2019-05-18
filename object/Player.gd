@@ -23,6 +23,7 @@ var lock_control = false
 
 # Turn based things
 signal end_player_turn
+var is_player_turn = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,12 +53,14 @@ func  _physics_process(delta):
 	
 	# Idle
 	if position == target_pos:
-		get_movedir()
-		last_pos = position
-		target_pos += move_dir * tile_size
-	
-	if !lock_control:
-		print("Wait for keyboard input")
+		if !lock_control:
+			get_movedir()
+			last_pos = position
+			target_pos += move_dir * tile_size
+		else:
+			if is_player_turn:
+				emit_signal("end_player_turn")
+				is_player_turn = false
 		
 	
 	pass
@@ -74,6 +77,10 @@ func get_movedir():
 	
 	if move_dir.x != 0 && move_dir.y != 0:
 		move_dir = Vector2.ZERO
+	
+	#Lock the keyboard after input
+	if LEFT || RIGHT || UP || DOWN:
+		toggle_control()
 
 func get_action():
 	var X = Input.is_action_just_pressed("ui_area_atk")
