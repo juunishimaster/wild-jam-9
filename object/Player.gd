@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+# State variables
+enum {IDEL, WALK, ATTACK, DEAD}
+var state = null
 
 # Movement variables
 var speed = 256
@@ -16,8 +16,11 @@ var move_dir = Vector2()
 var area_atk_distance = 1 # Change this accordingly; meaning: area_atk_distance * tile_size
 var ranged_atk_distance = 3 # Meaning: ranged_atk_distance * tile_size
 
-var curr_health
+# health
+signal health_changed
+signal dead 
 var max_health = 3
+var curr_health = max_health
 
 var lock_control = false
 
@@ -28,9 +31,13 @@ var is_player_turn = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Movement preparation
-	position = Vector2(176, 176)
+	position = Vector2(int(position.x/32)*32 + 16, int(position.y/32)*32 + 16)
 	last_pos = position
 	target_pos = position
+	
+	state = IDEL
+	
+	emit_signal('health_changed', curr_health)
 	
 	# Action preparation
 	curr_health = max_health
@@ -57,6 +64,8 @@ func  _physics_process(delta):
 			get_movedir()
 			last_pos = position
 			target_pos += move_dir * tile_size
+			
+			get_action()
 		else:
 			if is_player_turn:
 				emit_signal("end_player_turn")
@@ -131,3 +140,18 @@ func end_player_turn():
 func toggle_control():
 	lock_control = !lock_control
 	pass
+
+func hurt():
+	curr_health -= 1
+	emit_signal("health_changed",curr_health)
+	if(curr_health == 0):
+		emit_signal("dead")
+
+func _on_Z_pressed():
+	# do Z attack here
+	pass # Replace with function body.
+
+
+func _on_X_pressed():
+	# do X attack here
+	pass # Replace with function body.
